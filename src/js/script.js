@@ -61,7 +61,10 @@
       thisProduct.data = data;
       
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.procesOrder();
 
     }
 
@@ -78,23 +81,26 @@
 
     }
 
+    getElements(){
+      const thisProduct = this;
+    
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
     initAccordion(){
       const thisProduct = this;
       
-      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      
-      console.log(clickableTrigger);
-      console.log(thisProduct.element);
-      
       /* START: add event listener to clickable trigger on event click */
-      clickableTrigger.addEventListener('click', function(event) {
-        console.log('clicked', clickableTrigger);
+      thisProduct.accordionTrigger.addEventListener('click', function(event) {
         /* prevent default action for event */
         event.preventDefault();
         /* find active product (product that has active class) */
 
         const activeProduct = document.querySelector(select.all.menuProductsActive);
-        console.log(activeProduct);
 
         /* if there is active product and it's not thisProduct.element, remove class active from it */
         if(activeProduct != undefined && activeProduct != thisProduct.element){
@@ -103,11 +109,73 @@
        
         /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle('active');
-        console.log(thisProduct.element);
-      
-      });
-      
+      }); 
     }
+
+    initOrderForm(){
+      const thisProduct = this;
+      console.log(this.initOrderForm);
+
+      thisProduct.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+
+      for(let input of thisProduct.formInputs){
+        input.addEventListener('change', function(){
+          thisProduct.procesOrder();
+        });
+      } 
+
+      thisProduct.cartButton.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.procesOrder();
+      });
+
+    }
+
+    procesOrder(){
+      const thisProduct = this;
+
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      console.log('formData', formData);
+
+      // set price to default price
+      let price = thisProduct.data.price;
+      console.log(price);
+
+      // for every category (param)...
+      for(let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+        console.log(param);
+
+        // for every option in this category
+        for(let optionId in param.options) {
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+          const option = param.options[optionId];
+          console.log(option);
+          console.log(!option.default);
+          console.log(option.price);
+
+          if(formData[paramId] && formData[paramId].includes(optionId)){
+
+            if(!option.default){
+              price = price + option.price;
+            } 
+          } else{
+              if(option.default){
+                price = price - option.price;
+              }
+            }
+        }
+      }
+
+      // update calculated price in the HTML
+      thisProduct.priceElem.innerHTML = price;
+    }
+
   }
 
   const app = {
