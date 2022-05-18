@@ -99,7 +99,7 @@
       
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
 
-      thisProduct.amountWidgetElem.addEventListener('updated', function(event){
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
         thisProduct.procesOrder();
       });
     }
@@ -216,7 +216,7 @@
       const thisWidget = this;
       
       const newValue = parseInt(value);
-     console.log(settings.amountWidget.defaultValue);
+      console.log(settings.amountWidget.defaultValue);
   
       if(settings.amountWidget.defaultValue !== newValue && !isNaN(newValue) && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax){
         settings.amountWidget.defaultValue = newValue;
@@ -232,8 +232,8 @@
 
       const thisWidget = this;
       
-      thisWidget.input.addEventListener('change', function(event){
-        thisWidget.setValue(thisWidget.input.value)
+      thisWidget.input.addEventListener('change', function(){
+        thisWidget.setValue(thisWidget.input.value);
       });
       
       thisWidget.linkDecrease.addEventListener('click', function(event) {
