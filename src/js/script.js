@@ -92,7 +92,60 @@
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.procesOrder();
+    }
 
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {
+        id: (thisProduct.id),
+        name: (thisProduct.data.name),
+        amount: (settings.amountWidget.defaultValue),
+        priceSingle: (thisProduct.priceSingle),
+        price: (thisProduct.priceSingle * settings.amountWidget.defaultValue),
+        params: (thisProduct.prepareCartProductParams())
+      };
+      
+      return productSummary;
+    }
+
+    prepareCartProductParams(){
+      const thisProduct = this;
+
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      // set price to default price
+      const params = {};
+      // for every category (param)...
+      for(let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+
+        params[paramId] = {
+          label: param.label,
+          options: {}
+        };
+        // for every option in this category
+        for(let optionId in param.options) {
+          // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+          const option = param.options[optionId];
+          if(formData[paramId] && formData[paramId].includes(optionId)){
+            console.log(optionId);
+            params[paramId].options = {
+              [option.label]: optionId
+            }  
+          }
+        }
+      }
+      return params;
+    }
+    
+
+    addToCart(){
+      const thisProduct = this;
+
+      app.cart.add(thisProduct.prepareCartProduct());
     }
 
     renderInMenu(){
@@ -115,7 +168,6 @@
 
       thisProduct.dom.wrapper = thisProduct;
 
-      console.log(thisProduct.dom.wrapper);
       /* Pytanko Koniec */
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
@@ -174,6 +226,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.procesOrder();
+        thisProduct.addToCart();
       });
 
     }
@@ -218,9 +271,9 @@
       }
     
       // update calculated price in the HTML
+      thisProduct.priceSingle = price;
       price *= settings.amountWidget.defaultValue;
       thisProduct.priceElem.innerHTML = price;
-
     }
   }
   
@@ -314,8 +367,13 @@
       const thisCart = this;
 
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
-        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive)
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+    add(menuProduct) {
+      //const thisCart = this;
+
+      console.log('adding product', menuProduct);
     }
   }
 
