@@ -128,13 +128,15 @@
         };
         // for every option in this category
         for(let optionId in param.options) {
+          
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
           if(formData[paramId] && formData[paramId].includes(optionId)){
+            console.log(optionId);
             params[paramId].options = {
-              [optionId]: option.label
-            };
-          }
+            [optionId]: option.label
+            }
+          };
         }
       }
       return params;
@@ -359,9 +361,13 @@
       thisCart.dom = {};
 
       thisCart.dom.wrapper = element;
+      thisCart.dom.productList = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+
+      thisCart.dom.productList = thisCart.dom.productList.querySelector(select.cart.productList);
     }
+   
     initActions(){
       const thisCart = this;
 
@@ -370,7 +376,15 @@
       });
     }
     add(menuProduct) {
-      //const thisCart = this;
+      const thisCart = this;
+
+      const generatedHTML = templates.cartProduct(menuProduct);
+      
+      thisCart.element = utils.createDOMFromHTML(generatedHTML);
+      console.log(thisCart.element);
+      const menuContainer = thisCart.dom.productList;
+
+      menuContainer.appendChild(thisCart.element);
 
       console.log('adding product', menuProduct);
     }
