@@ -131,12 +131,11 @@
           
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
+          
           if(formData[paramId] && formData[paramId].includes(optionId)){
-            console.log(optionId);
-            params[paramId].options = {
-            [optionId]: option.label
-            }
-          };
+            console.log(option.label, paramId, optionId);
+            params[paramId].options[optionId] = option.label;
+          }
         }
       }
       return params;
@@ -164,19 +163,18 @@
 
     getElements(){
       const thisProduct = this;
-      /*Pytanko Start :p Czy o takie przypisanie chodziło w cwiczeniu do submodułu 8.3 */
+     
       thisProduct.dom = {};
 
-      thisProduct.dom.wrapper = thisProduct;
+      thisProduct.dom.wrapper = thisProduct.element;
 
-      /* Pytanko Koniec */
-      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.accordionTrigger = thisProduct.dom.wrapper.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.dom.wrapper.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
-      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      thisProduct.cartButton = thisProduct.dom.wrapper.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.dom.wrapper.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.dom.wrapper.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.dom.wrapper.querySelector(select.menuProduct.amountWidget);
     }
 
     initAmountWidget(){
@@ -330,7 +328,7 @@
       thisWidget.linkIncrease.addEventListener('click', function(event){
         event.preventDefault();
 
-        thisWidget.setValue(settings.amountWidget.defaultValue +1);
+        thisWidget.setValue(settings.amountWidget.defaultValue + 1);
       });
    
     }
@@ -349,7 +347,6 @@
       const thisCart = this;
 
       thisCart.products = [];
-
       thisCart.getElements(element);
       thisCart.initActions();
 
@@ -357,10 +354,11 @@
 
     getElements(element){
       const thisCart = this;
-
+      
       thisCart.dom = {};
-
+      
       thisCart.dom.wrapper = element;
+
       thisCart.dom.productList = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
@@ -386,8 +384,54 @@
 
       menuContainer.appendChild(thisCart.element);
 
-      console.log('adding product', menuProduct);
+      thisCart.products.push(new cartProduct(menuProduct, thisCart.element));
+      console.log('thisCart.products', thisCart.products);
     }
+  }
+  
+  class cartProduct {
+    constructor(menuProduct, element){
+
+      const thisCartProduct = this;
+
+      thisCartProduct.menuProduct = menuProduct;
+
+      thisCartProduct.id = menuProduct.id;
+
+      thisCartProduct.amount = menuProduct.amount;
+
+      thisCartProduct.name = menuProduct.name;
+
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+
+      thisCartProduct.price = menuProduct.price;
+      
+      thisCartProduct.params = menuProduct.params;
+      
+      thisCartProduct.getElements(element);
+    
+      
+    }
+
+    getElements(element){
+      const thisCartProduct = this;
+      
+      thisCartProduct.dom = {};
+      
+      thisCartProduct.dom.wrapper = element;
+
+      thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
+      console.log(thisCartProduct.dom.amountWidget);
+
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      console.log(thisCartProduct.dom.price);
+
+      thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
+     
+      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+
+    }
+
   }
 
   const app = {
