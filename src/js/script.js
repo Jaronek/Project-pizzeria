@@ -351,6 +351,7 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
+      
     }
 
     getElements(element){
@@ -365,17 +366,17 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
 
       thisCart.dom.productList = thisCart.dom.productList.querySelector(select.cart.productList);
-      console.log(thisCart.dom.productList);
+
       thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
-      console.log(thisCart.dom.deliveryFee);
+      
 
       thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
-      console.log(thisCart.dom.subtotalPrice);
+
       //dlaczego przy wborze wszystkich elementow nie wstawia total price w innerHTML
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelector(select.cart.totalPrice);
-      console.log(thisCart.dom.totalPrice);
+
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
-      console.log(thisCart.dom.totalNumber);
+
     }
    
     initActions(){
@@ -387,19 +388,25 @@
       thisCart.dom.productList.addEventListener('updated', function(){
         thisCart.update();
       });
-
       thisCart.dom.productList.addEventListener('remove', function(){
-        thisCart.remove(event);
-      })
-
+        thisCart.remove(event.detail.cartProduct); 
+      });
     }
 
     remove(event){
       const thisCart = this;
-      thisCart.productList = new cartProduct(event.detail.cartProduct);
-      console.log(thisCart.productList);
-    }
 
+      const eventDel = event.dom.wrapper;
+
+      const index = thisCart.products.indexOf(event);
+
+      const removed = thisCart.products.splice(index, 1);
+
+      eventDel.remove();
+      thisCart.update();
+      
+    }
+  
     add(menuProduct) {
       const thisCart = this;
 
@@ -422,12 +429,14 @@
       for(let cartProducts of thisCart.products){
         const amount = parseInt(cartProducts.amount);
         totalNumber = amount + totalNumber;
-        console.log(totalNumber);
         subtotalPrice = cartProducts.price + subtotalPrice;
-        console.log(subtotalPrice);
       }
-      thisCart.totalPrice = subtotalPrice + transportFee;
-      console.log(thisCart.totalPrice);
+      if(totalNumber != 0){
+        thisCart.totalPrice = subtotalPrice + transportFee;
+      }else if (totalNumber == 0){
+        thisCart.totalPrice = 0;
+      }
+      
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       thisCart.dom.deliveryFee.innerHTML = transportFee;
@@ -465,7 +474,7 @@
       thisCartProduct.dom = {};
       
       thisCartProduct.dom.wrapper = element;
-
+      
       thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
 
       thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
@@ -478,9 +487,7 @@
 
     initWidgetAmountCart(){
       const thisCartProduct = this;
-      console.log(thisCartProduct.dom.amountWidget);
-      thisCartProduct.amountWidgetElem = new AmountWidget(thisCartProduct.dom.amountWidget);
-      console.log(thisCartProduct.dom.amountWidget);
+      thisCartProduct.amountWidgetElem = new AmountWidget(thisCartProduct.dom.amountWidget); 
       thisCartProduct.dom.amountWidget.addEventListener('updated', function(){
         
         thisCartProduct.amount = thisCartProduct.amountWidgetElem.input.value;
@@ -489,21 +496,21 @@
 
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
         console.log(thisCartProduct.amount);
-      })
+      });
     }
 
     remove(){
       const thisCartProduct = this;
+
       const event = new CustomEvent('remove', {
         bubbles: true,
         detail: {
           cartProduct: thisCartProduct,
         },
-      });
-
+      });  
       thisCartProduct.dom.wrapper.dispatchEvent(event);
-      
     }
+    
     initActions(){
       const thisCartProduct = this;
 
@@ -515,6 +522,7 @@
         thisCartProduct.remove();
       });
     }
+
   }
 
   const app = {
