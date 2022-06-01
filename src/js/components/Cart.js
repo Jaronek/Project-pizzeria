@@ -1,6 +1,6 @@
-import {select, classNames, settings, templates} from './settings.js';
-import cartProduct from './components/CartProduct.js';
-import utils from './utils.js';
+import {select, classNames, settings, templates} from '../settings.js';
+import cartProduct from '../components/CartProduct.js';
+import utils from '../utils.js';
 
 class Cart {
   constructor(element){
@@ -62,6 +62,7 @@ class Cart {
       deliveryFee: thisCart.dom.deliveryFee,
       products: []
     };
+    console.log(payload);
     for(let prod of thisCart.products) {
       payload.products.push(prod.getData());
     }
@@ -101,21 +102,23 @@ class Cart {
     menuContainer.appendChild(thisCart.element);
 
     thisCart.products.push(new cartProduct(menuProduct, thisCart.element));
+    console.log(menuProduct);
     thisCart.update();
   }
 
   update(){
     const thisCart = this;
     const transportFee = settings.cart.defaultDeliveryFee;
-    let totalNumber = 0;
+    console.log(thisCart.products);
+    let totalNumber = 1;
     let subtotalPrice = 0;
     for(let cartProducts of thisCart.products){
+      console.log(cartProducts);
       const amount = parseInt(cartProducts.amount);
       totalNumber = amount + totalNumber;
       thisCart.totalNumber = totalNumber;
       subtotalPrice = cartProducts.price + subtotalPrice;
       thisCart.subtotalPrice = subtotalPrice;
-      console.log(subtotalPrice);
     }
     if(totalNumber != 0){
       thisCart.totalPrice = subtotalPrice + transportFee;

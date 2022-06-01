@@ -1,6 +1,6 @@
-import {select, classNames, templates, settings} from './settings.js';
-import utils from './utils.js';
-import AmountWidget from './components/AmountWidget.js';
+import {select, classNames, templates, settings} from '../settings.js';
+import utils from '../utils.js';
+import AmountWidget from '../components/AmountWidget.js';
 
 class Product {
     
@@ -29,7 +29,7 @@ class Product {
       price: (thisProduct.priceSingle * settings.amountWidget.defaultValue),
       params: (thisProduct.prepareCartProductParams())
     };
-
+    
     return productSummary;
   }
 
@@ -62,13 +62,17 @@ class Product {
 
   addToCart(){
     const thisProduct = this;
+    thisProduct.name = thisProduct.data.name;
+    thisProduct.amount = thisProduct.amountWidget.value;
 
     const event = new CustomEvent('add-to-cart', {
       bubbles: true,
       detail: {
         product: thisProduct,
       },
+      
     });
+    console.log(event.detail.product);
 
     thisProduct.element.dispatchEvent(event);
   }

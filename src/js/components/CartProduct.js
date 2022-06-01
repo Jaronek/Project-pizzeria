@@ -1,5 +1,5 @@
-import {select} from './settings.js';
-import AmountWidget from './components/AmountWidget.js';
+import {select} from '../settings.js';
+import AmountWidget from '../components/AmountWidget.js';
 
 class cartProduct {
   constructor(menuProduct, element){
@@ -7,6 +7,7 @@ class cartProduct {
     const thisCartProduct = this;
 
     thisCartProduct.menuProduct = menuProduct;
+    console.log(menuProduct);
 
     thisCartProduct.id = menuProduct.id;
 
@@ -90,6 +91,7 @@ class cartProduct {
       name: (thisCartProduct.name),
       params: (thisCartProduct.params)
     };
+    console.log(cartProductSummary);
     return cartProductSummary;
   }
 }

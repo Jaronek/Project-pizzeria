@@ -1,4 +1,4 @@
-import { settings, select, classNames, templates} from './settings.js'; 
+import {settings, select, classNames, templates} from './settings.js'; 
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 
@@ -18,7 +18,7 @@ const app = {
     thisApp.cart = new Cart(cartElem);
 
     thisApp.productList = document.querySelector(select.containerOf.menu);
-
+  
     thisApp.productList.addEventListener('add-to-cart', function(event){
       app.cart.add(event.detail.product);
     });
@@ -56,3 +56,5 @@ const app = {
 };
 
 app.init();
+
+export default app;
