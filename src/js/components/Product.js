@@ -29,7 +29,7 @@ class Product {
       params: (thisProduct.prepareCartProductParams())
     };
     
-  return productSummary;
+    return productSummary;
   }
 
   prepareCartProductParams(){
