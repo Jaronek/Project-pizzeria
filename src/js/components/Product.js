@@ -20,7 +20,6 @@ class Product {
 
   prepareCartProduct(){
     const thisProduct = this;
-    
     const productSummary = {
       id: (thisProduct.id),
       name: (thisProduct.data.name),
@@ -30,7 +29,7 @@ class Product {
       params: (thisProduct.prepareCartProductParams())
     };
     
-    return productSummary;
+  return productSummary;
   }
 
   prepareCartProductParams(){
@@ -41,7 +40,6 @@ class Product {
     const params = {};
     for(let paramId in thisProduct.data.params) {
       const param = thisProduct.data.params[paramId];
-
       params[paramId] = {
         label: param.label,
         options: {}
@@ -63,7 +61,9 @@ class Product {
   addToCart(){
     const thisProduct = this;
     thisProduct.name = thisProduct.data.name;
-    thisProduct.amount = thisProduct.amountWidget.value;
+    thisProduct.amount = thisProduct.amountWidget.input.value;
+    thisProduct.price = thisProduct.priceSingle * settings.amountWidget.defaultValue;
+    thisProduct.params = thisProduct.prepareCartProductParams();
 
     const event = new CustomEvent('add-to-cart', {
       bubbles: true,
@@ -72,7 +72,6 @@ class Product {
       },
       
     });
-    console.log(event.detail.product);
 
     thisProduct.element.dispatchEvent(event);
   }

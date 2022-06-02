@@ -7,7 +7,6 @@ class cartProduct {
     const thisCartProduct = this;
 
     thisCartProduct.menuProduct = menuProduct;
-    console.log(menuProduct);
 
     thisCartProduct.id = menuProduct.id;
 
@@ -91,7 +90,6 @@ class cartProduct {
       name: (thisCartProduct.name),
       params: (thisCartProduct.params)
     };
-    console.log(cartProductSummary);
     return cartProductSummary;
   }
 }

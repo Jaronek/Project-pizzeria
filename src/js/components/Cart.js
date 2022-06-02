@@ -92,6 +92,7 @@ class Cart {
   }
   
   add(menuProduct) {
+    
     const thisCart = this;
 
     const generatedHTML = templates.cartProduct(menuProduct);
@@ -109,15 +110,20 @@ class Cart {
   update(){
     const thisCart = this;
     const transportFee = settings.cart.defaultDeliveryFee;
-    console.log(thisCart.products);
-    let totalNumber = 1;
+
+    let totalNumber = 0;
     let subtotalPrice = 0;
+
     for(let cartProducts of thisCart.products){
-      console.log(cartProducts);
+
       const amount = parseInt(cartProducts.amount);
+
       totalNumber = amount + totalNumber;
+
       thisCart.totalNumber = totalNumber;
+
       subtotalPrice = cartProducts.price + subtotalPrice;
+      
       thisCart.subtotalPrice = subtotalPrice;
     }
     if(totalNumber != 0){
