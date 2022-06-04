@@ -101,7 +101,7 @@ export const settings = {
     open: 12,
     close: 24,
   },
-  atePicker: {
+  datePicker: {
     maxDaysInFuture: 14,
   },
   booking: {

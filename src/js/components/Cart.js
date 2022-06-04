@@ -103,7 +103,7 @@ class Cart {
     menuContainer.appendChild(thisCart.element);
 
     thisCart.products.push(new cartProduct(menuProduct, thisCart.element));
-    console.log(menuProduct);
+    
     thisCart.update();
   }
 
@@ -117,7 +117,7 @@ class Cart {
     for(let cartProducts of thisCart.products){
 
       const amount = parseInt(cartProducts.amount);
-
+    
       totalNumber = amount + totalNumber;
 
       thisCart.totalNumber = totalNumber;

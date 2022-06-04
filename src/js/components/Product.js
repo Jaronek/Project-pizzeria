@@ -61,7 +61,9 @@ class Product {
   addToCart(){
     const thisProduct = this;
     thisProduct.name = thisProduct.data.name;
-    thisProduct.amount = thisProduct.amountWidget.input.value;
+    console.log(thisProduct.amountWidget.value);
+    thisProduct.amount = thisProduct.amountWidget.value;
+
     thisProduct.price = thisProduct.priceSingle * settings.amountWidget.defaultValue;
     thisProduct.params = thisProduct.prepareCartProductParams();
 

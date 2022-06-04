@@ -31,9 +31,8 @@ class cartProduct {
     thisCartProduct.dom = {};
       
     thisCartProduct.dom.wrapper = element;
-      console.log(thisCartProduct.dom.wrapper);
+
     thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
-    console.log(thisCartProduct.dom.amountWidget);
 
     thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
 
