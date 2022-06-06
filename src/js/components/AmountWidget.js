@@ -10,7 +10,6 @@ class AmountWidget extends BaseWidget{
     thisWidget.getElements(element);
     thisWidget.initActions();
 
-    console.log('amountWidget:', thisWidget);
   }
   
   getElements(){
@@ -30,7 +29,8 @@ class AmountWidget extends BaseWidget{
 
   renderValue(){
     const thisWidget = this;
-    thisWidget.dom.input.value = thisWidget.value;
+    thisWidget.dom.input.value = thisWidget.correctValue;
+   
   }
 
   initActions(){

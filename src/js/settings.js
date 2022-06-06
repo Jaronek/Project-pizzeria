@@ -98,7 +98,7 @@ export const settings = {
     defaultDeliveryFee: 20,
   },
   hours: {
-    open: 12,
+    open: 7,
     close: 24,
   },
   datePicker: {
@@ -111,9 +111,9 @@ export const settings = {
     url: '//localhost:3131',
     product: 'product',
     products: 'products',
-    orders: 'order',
-    booking: 'booking',
-    event: 'event',
+    orders: 'orders',
+    booking: 'bookings',
+    event: 'events',
     dateStartParamKey: 'date_gte',
     dateEndParamKey: 'date_lte',
     notRepeatParam: 'repeat=false',

@@ -47,9 +47,10 @@ class cartProduct {
     thisCartProduct.amountWidgetElem = new AmountWidget(thisCartProduct.dom.amountWidget); 
     thisCartProduct.dom.amountWidget.addEventListener('updated', function(){
         
-      thisCartProduct.amount = thisCartProduct.amountWidgetElem.input.value;
+      console.log(thisCartProduct.amountWidgetElem);
+      thisCartProduct.amount = thisCartProduct.amountWidgetElem.correctValue;
         
-      thisCartProduct.price = thisCartProduct.amountWidgetElem.input.value * thisCartProduct.priceSingle;
+      thisCartProduct.price = thisCartProduct.amountWidgetElem.correctValue * thisCartProduct.priceSingle;
 
       thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
     });
